@@ -46,7 +46,20 @@
      par_g = 264,
      par_d = 265,
      moins = 266,
-     mult = 267
+     mult = 267,
+     divi = 268,
+     true = 269,
+     false = 270,
+     inf = 271,
+     inf_eg = 272,
+     sup = 273,
+     sup_eg = 274,
+     eg = 275,
+     eq = 276,
+     not = 277,
+     and = 278,
+     or = 279,
+     umoins = 280
    };
 #endif
 /* Tokens.  */
@@ -60,6 +73,19 @@
 #define par_d 265
 #define moins 266
 #define mult 267
+#define divi 268
+#define true 269
+#define false 270
+#define inf 271
+#define inf_eg 272
+#define sup 273
+#define sup_eg 274
+#define eg 275
+#define eq 276
+#define not 277
+#define and 278
+#define or 279
+#define umoins 280
 
 
 

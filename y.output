@@ -2,6 +2,8 @@ Terminaux inutilisés dans la grammaire
 
    affect
    ident
+   eg
+   not
 
 
 Grammaire
@@ -13,10 +15,21 @@ Grammaire
     2 INSTR: print_int EXPR
 
     3 EXPR: integer
-    4     | EXPR plus EXPR
-    5     | EXPR moins EXPR
-    6     | EXPR mult EXPR
-    7     | par_g EXPR par_d
+    4     | true
+    5     | false
+    6     | EXPR inf EXPR
+    7     | EXPR inf_eg EXPR
+    8     | EXPR sup EXPR
+    9     | EXPR sup_eg EXPR
+   10     | EXPR eq EXPR
+   11     | EXPR and EXPR
+   12     | EXPR or EXPR
+   13     | EXPR plus EXPR
+   14     | EXPR moins EXPR
+   15     | EXPR mult EXPR
+   16     | EXPR divi EXPR
+   17     | par_g EXPR par_d
+   18     | moins EXPR
 
 
 Terminaux, suivis des règles où ils apparaissent
@@ -28,23 +41,37 @@ print_int (259) 2
 affect (260)
 ident (261)
 pt_virg (262) 1
-plus (263) 4
-par_g (264) 7
-par_d (265) 7
-moins (266) 5
-mult (267) 6
+plus (263) 13
+par_g (264) 17
+par_d (265) 17
+moins (266) 14 18
+mult (267) 15
+divi (268) 16
+true (269) 4
+false (270) 5
+inf (271) 6
+inf_eg (272) 7
+sup (273) 8
+sup_eg (274) 9
+eg (275)
+eq (276) 10
+not (277)
+and (278) 11
+or (279) 12
+umoins (280)
 
 
 Non-terminaux, suivis des règles où ils apparaissent
 
-$accept (13)
+$accept (26)
     à gauche: 0
-PROGRAM (14)
+PROGRAM (27)
     à gauche: 1, à droite: 0
-INSTR (15)
+INSTR (28)
     à gauche: 2, à droite: 1
-EXPR (16)
-    à gauche: 3 4 5 6 7, à droite: 2 4 5 6 7
+EXPR (29)
+    à gauche: 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18, à droite:
+    2 6 7 8 9 10 11 12 13 14 15 16 17 18
 
 
 état 0
@@ -63,22 +90,25 @@ EXPR (16)
 
     integer  décalage et aller à l'état 4
     par_g    décalage et aller à l'état 5
+    moins    décalage et aller à l'état 6
+    true     décalage et aller à l'état 7
+    false    décalage et aller à l'état 8
 
-    EXPR  aller à l'état 6
+    EXPR  aller à l'état 9
 
 
 état 2
 
     0 $accept: PROGRAM . $end
 
-    $end  décalage et aller à l'état 7
+    $end  décalage et aller à l'état 10
 
 
 état 3
 
     1 PROGRAM: INSTR . pt_virg pt_virg
 
-    pt_virg  décalage et aller à l'état 8
+    pt_virg  décalage et aller à l'état 11
 
 
 état 4
@@ -90,128 +120,541 @@ EXPR (16)
 
 état 5
 
-    7 EXPR: par_g . EXPR par_d
+   17 EXPR: par_g . EXPR par_d
 
     integer  décalage et aller à l'état 4
     par_g    décalage et aller à l'état 5
+    moins    décalage et aller à l'état 6
+    true     décalage et aller à l'état 7
+    false    décalage et aller à l'état 8
 
-    EXPR  aller à l'état 9
+    EXPR  aller à l'état 12
 
 
 état 6
 
-    2 INSTR: print_int EXPR .
-    4 EXPR: EXPR . plus EXPR
-    5     | EXPR . moins EXPR
-    6     | EXPR . mult EXPR
+   18 EXPR: moins . EXPR
 
-    plus   décalage et aller à l'état 10
-    moins  décalage et aller à l'état 11
-    mult   décalage et aller à l'état 12
+    integer  décalage et aller à l'état 4
+    par_g    décalage et aller à l'état 5
+    moins    décalage et aller à l'état 6
+    true     décalage et aller à l'état 7
+    false    décalage et aller à l'état 8
+
+    EXPR  aller à l'état 13
+
+
+état 7
+
+    4 EXPR: true .
+
+    $défaut  réduction par utilisation de la règle 4 (EXPR)
+
+
+état 8
+
+    5 EXPR: false .
+
+    $défaut  réduction par utilisation de la règle 5 (EXPR)
+
+
+état 9
+
+    2 INSTR: print_int EXPR .
+    6 EXPR: EXPR . inf EXPR
+    7     | EXPR . inf_eg EXPR
+    8     | EXPR . sup EXPR
+    9     | EXPR . sup_eg EXPR
+   10     | EXPR . eq EXPR
+   11     | EXPR . and EXPR
+   12     | EXPR . or EXPR
+   13     | EXPR . plus EXPR
+   14     | EXPR . moins EXPR
+   15     | EXPR . mult EXPR
+   16     | EXPR . divi EXPR
+
+    plus    décalage et aller à l'état 14
+    moins   décalage et aller à l'état 15
+    mult    décalage et aller à l'état 16
+    divi    décalage et aller à l'état 17
+    inf     décalage et aller à l'état 18
+    inf_eg  décalage et aller à l'état 19
+    sup     décalage et aller à l'état 20
+    sup_eg  décalage et aller à l'état 21
+    eq      décalage et aller à l'état 22
+    and     décalage et aller à l'état 23
+    or      décalage et aller à l'état 24
 
     $défaut  réduction par utilisation de la règle 2 (INSTR)
 
 
-état 7
+état 10
 
     0 $accept: PROGRAM $end .
 
     $défaut  accepter
 
 
-état 8
+état 11
 
     1 PROGRAM: INSTR pt_virg . pt_virg
 
-    pt_virg  décalage et aller à l'état 13
-
-
-état 9
-
-    4 EXPR: EXPR . plus EXPR
-    5     | EXPR . moins EXPR
-    6     | EXPR . mult EXPR
-    7     | par_g EXPR . par_d
-
-    plus   décalage et aller à l'état 10
-    par_d  décalage et aller à l'état 14
-    moins  décalage et aller à l'état 11
-    mult   décalage et aller à l'état 12
-
-
-état 10
-
-    4 EXPR: EXPR plus . EXPR
-
-    integer  décalage et aller à l'état 4
-    par_g    décalage et aller à l'état 5
-
-    EXPR  aller à l'état 15
-
-
-état 11
-
-    5 EXPR: EXPR moins . EXPR
-
-    integer  décalage et aller à l'état 4
-    par_g    décalage et aller à l'état 5
-
-    EXPR  aller à l'état 16
+    pt_virg  décalage et aller à l'état 25
 
 
 état 12
 
-    6 EXPR: EXPR mult . EXPR
+    6 EXPR: EXPR . inf EXPR
+    7     | EXPR . inf_eg EXPR
+    8     | EXPR . sup EXPR
+    9     | EXPR . sup_eg EXPR
+   10     | EXPR . eq EXPR
+   11     | EXPR . and EXPR
+   12     | EXPR . or EXPR
+   13     | EXPR . plus EXPR
+   14     | EXPR . moins EXPR
+   15     | EXPR . mult EXPR
+   16     | EXPR . divi EXPR
+   17     | par_g EXPR . par_d
 
-    integer  décalage et aller à l'état 4
-    par_g    décalage et aller à l'état 5
-
-    EXPR  aller à l'état 17
+    plus    décalage et aller à l'état 14
+    par_d   décalage et aller à l'état 26
+    moins   décalage et aller à l'état 15
+    mult    décalage et aller à l'état 16
+    divi    décalage et aller à l'état 17
+    inf     décalage et aller à l'état 18
+    inf_eg  décalage et aller à l'état 19
+    sup     décalage et aller à l'état 20
+    sup_eg  décalage et aller à l'état 21
+    eq      décalage et aller à l'état 22
+    and     décalage et aller à l'état 23
+    or      décalage et aller à l'état 24
 
 
 état 13
+
+    6 EXPR: EXPR . inf EXPR
+    7     | EXPR . inf_eg EXPR
+    8     | EXPR . sup EXPR
+    9     | EXPR . sup_eg EXPR
+   10     | EXPR . eq EXPR
+   11     | EXPR . and EXPR
+   12     | EXPR . or EXPR
+   13     | EXPR . plus EXPR
+   14     | EXPR . moins EXPR
+   15     | EXPR . mult EXPR
+   16     | EXPR . divi EXPR
+   18     | moins EXPR .
+
+    $défaut  réduction par utilisation de la règle 18 (EXPR)
+
+
+état 14
+
+   13 EXPR: EXPR plus . EXPR
+
+    integer  décalage et aller à l'état 4
+    par_g    décalage et aller à l'état 5
+    moins    décalage et aller à l'état 6
+    true     décalage et aller à l'état 7
+    false    décalage et aller à l'état 8
+
+    EXPR  aller à l'état 27
+
+
+état 15
+
+   14 EXPR: EXPR moins . EXPR
+
+    integer  décalage et aller à l'état 4
+    par_g    décalage et aller à l'état 5
+    moins    décalage et aller à l'état 6
+    true     décalage et aller à l'état 7
+    false    décalage et aller à l'état 8
+
+    EXPR  aller à l'état 28
+
+
+état 16
+
+   15 EXPR: EXPR mult . EXPR
+
+    integer  décalage et aller à l'état 4
+    par_g    décalage et aller à l'état 5
+    moins    décalage et aller à l'état 6
+    true     décalage et aller à l'état 7
+    false    décalage et aller à l'état 8
+
+    EXPR  aller à l'état 29
+
+
+état 17
+
+   16 EXPR: EXPR divi . EXPR
+
+    integer  décalage et aller à l'état 4
+    par_g    décalage et aller à l'état 5
+    moins    décalage et aller à l'état 6
+    true     décalage et aller à l'état 7
+    false    décalage et aller à l'état 8
+
+    EXPR  aller à l'état 30
+
+
+état 18
+
+    6 EXPR: EXPR inf . EXPR
+
+    integer  décalage et aller à l'état 4
+    par_g    décalage et aller à l'état 5
+    moins    décalage et aller à l'état 6
+    true     décalage et aller à l'état 7
+    false    décalage et aller à l'état 8
+
+    EXPR  aller à l'état 31
+
+
+état 19
+
+    7 EXPR: EXPR inf_eg . EXPR
+
+    integer  décalage et aller à l'état 4
+    par_g    décalage et aller à l'état 5
+    moins    décalage et aller à l'état 6
+    true     décalage et aller à l'état 7
+    false    décalage et aller à l'état 8
+
+    EXPR  aller à l'état 32
+
+
+état 20
+
+    8 EXPR: EXPR sup . EXPR
+
+    integer  décalage et aller à l'état 4
+    par_g    décalage et aller à l'état 5
+    moins    décalage et aller à l'état 6
+    true     décalage et aller à l'état 7
+    false    décalage et aller à l'état 8
+
+    EXPR  aller à l'état 33
+
+
+état 21
+
+    9 EXPR: EXPR sup_eg . EXPR
+
+    integer  décalage et aller à l'état 4
+    par_g    décalage et aller à l'état 5
+    moins    décalage et aller à l'état 6
+    true     décalage et aller à l'état 7
+    false    décalage et aller à l'état 8
+
+    EXPR  aller à l'état 34
+
+
+état 22
+
+   10 EXPR: EXPR eq . EXPR
+
+    integer  décalage et aller à l'état 4
+    par_g    décalage et aller à l'état 5
+    moins    décalage et aller à l'état 6
+    true     décalage et aller à l'état 7
+    false    décalage et aller à l'état 8
+
+    EXPR  aller à l'état 35
+
+
+état 23
+
+   11 EXPR: EXPR and . EXPR
+
+    integer  décalage et aller à l'état 4
+    par_g    décalage et aller à l'état 5
+    moins    décalage et aller à l'état 6
+    true     décalage et aller à l'état 7
+    false    décalage et aller à l'état 8
+
+    EXPR  aller à l'état 36
+
+
+état 24
+
+   12 EXPR: EXPR or . EXPR
+
+    integer  décalage et aller à l'état 4
+    par_g    décalage et aller à l'état 5
+    moins    décalage et aller à l'état 6
+    true     décalage et aller à l'état 7
+    false    décalage et aller à l'état 8
+
+    EXPR  aller à l'état 37
+
+
+état 25
 
     1 PROGRAM: INSTR pt_virg pt_virg .
 
     $défaut  réduction par utilisation de la règle 1 (PROGRAM)
 
 
-état 14
+état 26
 
-    7 EXPR: par_g EXPR par_d .
+   17 EXPR: par_g EXPR par_d .
+
+    $défaut  réduction par utilisation de la règle 17 (EXPR)
+
+
+état 27
+
+    6 EXPR: EXPR . inf EXPR
+    7     | EXPR . inf_eg EXPR
+    8     | EXPR . sup EXPR
+    9     | EXPR . sup_eg EXPR
+   10     | EXPR . eq EXPR
+   11     | EXPR . and EXPR
+   12     | EXPR . or EXPR
+   13     | EXPR . plus EXPR
+   13     | EXPR plus EXPR .
+   14     | EXPR . moins EXPR
+   15     | EXPR . mult EXPR
+   16     | EXPR . divi EXPR
+
+    mult  décalage et aller à l'état 16
+    divi  décalage et aller à l'état 17
+
+    $défaut  réduction par utilisation de la règle 13 (EXPR)
+
+
+état 28
+
+    6 EXPR: EXPR . inf EXPR
+    7     | EXPR . inf_eg EXPR
+    8     | EXPR . sup EXPR
+    9     | EXPR . sup_eg EXPR
+   10     | EXPR . eq EXPR
+   11     | EXPR . and EXPR
+   12     | EXPR . or EXPR
+   13     | EXPR . plus EXPR
+   14     | EXPR . moins EXPR
+   14     | EXPR moins EXPR .
+   15     | EXPR . mult EXPR
+   16     | EXPR . divi EXPR
+
+    mult  décalage et aller à l'état 16
+    divi  décalage et aller à l'état 17
+
+    $défaut  réduction par utilisation de la règle 14 (EXPR)
+
+
+état 29
+
+    6 EXPR: EXPR . inf EXPR
+    7     | EXPR . inf_eg EXPR
+    8     | EXPR . sup EXPR
+    9     | EXPR . sup_eg EXPR
+   10     | EXPR . eq EXPR
+   11     | EXPR . and EXPR
+   12     | EXPR . or EXPR
+   13     | EXPR . plus EXPR
+   14     | EXPR . moins EXPR
+   15     | EXPR . mult EXPR
+   15     | EXPR mult EXPR .
+   16     | EXPR . divi EXPR
+
+    $défaut  réduction par utilisation de la règle 15 (EXPR)
+
+
+état 30
+
+    6 EXPR: EXPR . inf EXPR
+    7     | EXPR . inf_eg EXPR
+    8     | EXPR . sup EXPR
+    9     | EXPR . sup_eg EXPR
+   10     | EXPR . eq EXPR
+   11     | EXPR . and EXPR
+   12     | EXPR . or EXPR
+   13     | EXPR . plus EXPR
+   14     | EXPR . moins EXPR
+   15     | EXPR . mult EXPR
+   16     | EXPR . divi EXPR
+   16     | EXPR divi EXPR .
+
+    $défaut  réduction par utilisation de la règle 16 (EXPR)
+
+
+état 31
+
+    6 EXPR: EXPR . inf EXPR
+    6     | EXPR inf EXPR .
+    7     | EXPR . inf_eg EXPR
+    8     | EXPR . sup EXPR
+    9     | EXPR . sup_eg EXPR
+   10     | EXPR . eq EXPR
+   11     | EXPR . and EXPR
+   12     | EXPR . or EXPR
+   13     | EXPR . plus EXPR
+   14     | EXPR . moins EXPR
+   15     | EXPR . mult EXPR
+   16     | EXPR . divi EXPR
+
+    plus   décalage et aller à l'état 14
+    moins  décalage et aller à l'état 15
+    mult   décalage et aller à l'état 16
+    divi   décalage et aller à l'état 17
+
+    $défaut  réduction par utilisation de la règle 6 (EXPR)
+
+
+état 32
+
+    6 EXPR: EXPR . inf EXPR
+    7     | EXPR . inf_eg EXPR
+    7     | EXPR inf_eg EXPR .
+    8     | EXPR . sup EXPR
+    9     | EXPR . sup_eg EXPR
+   10     | EXPR . eq EXPR
+   11     | EXPR . and EXPR
+   12     | EXPR . or EXPR
+   13     | EXPR . plus EXPR
+   14     | EXPR . moins EXPR
+   15     | EXPR . mult EXPR
+   16     | EXPR . divi EXPR
+
+    plus   décalage et aller à l'état 14
+    moins  décalage et aller à l'état 15
+    mult   décalage et aller à l'état 16
+    divi   décalage et aller à l'état 17
 
     $défaut  réduction par utilisation de la règle 7 (EXPR)
 
 
-état 15
+état 33
 
-    4 EXPR: EXPR . plus EXPR
-    4     | EXPR plus EXPR .
-    5     | EXPR . moins EXPR
-    6     | EXPR . mult EXPR
+    6 EXPR: EXPR . inf EXPR
+    7     | EXPR . inf_eg EXPR
+    8     | EXPR . sup EXPR
+    8     | EXPR sup EXPR .
+    9     | EXPR . sup_eg EXPR
+   10     | EXPR . eq EXPR
+   11     | EXPR . and EXPR
+   12     | EXPR . or EXPR
+   13     | EXPR . plus EXPR
+   14     | EXPR . moins EXPR
+   15     | EXPR . mult EXPR
+   16     | EXPR . divi EXPR
 
-    mult  décalage et aller à l'état 12
+    plus   décalage et aller à l'état 14
+    moins  décalage et aller à l'état 15
+    mult   décalage et aller à l'état 16
+    divi   décalage et aller à l'état 17
 
-    $défaut  réduction par utilisation de la règle 4 (EXPR)
-
-
-état 16
-
-    4 EXPR: EXPR . plus EXPR
-    5     | EXPR . moins EXPR
-    5     | EXPR moins EXPR .
-    6     | EXPR . mult EXPR
-
-    mult  décalage et aller à l'état 12
-
-    $défaut  réduction par utilisation de la règle 5 (EXPR)
+    $défaut  réduction par utilisation de la règle 8 (EXPR)
 
 
-état 17
+état 34
 
-    4 EXPR: EXPR . plus EXPR
-    5     | EXPR . moins EXPR
-    6     | EXPR . mult EXPR
-    6     | EXPR mult EXPR .
+    6 EXPR: EXPR . inf EXPR
+    7     | EXPR . inf_eg EXPR
+    8     | EXPR . sup EXPR
+    9     | EXPR . sup_eg EXPR
+    9     | EXPR sup_eg EXPR .
+   10     | EXPR . eq EXPR
+   11     | EXPR . and EXPR
+   12     | EXPR . or EXPR
+   13     | EXPR . plus EXPR
+   14     | EXPR . moins EXPR
+   15     | EXPR . mult EXPR
+   16     | EXPR . divi EXPR
 
-    $défaut  réduction par utilisation de la règle 6 (EXPR)
+    plus   décalage et aller à l'état 14
+    moins  décalage et aller à l'état 15
+    mult   décalage et aller à l'état 16
+    divi   décalage et aller à l'état 17
+
+    $défaut  réduction par utilisation de la règle 9 (EXPR)
+
+
+état 35
+
+    6 EXPR: EXPR . inf EXPR
+    7     | EXPR . inf_eg EXPR
+    8     | EXPR . sup EXPR
+    9     | EXPR . sup_eg EXPR
+   10     | EXPR . eq EXPR
+   10     | EXPR eq EXPR .
+   11     | EXPR . and EXPR
+   12     | EXPR . or EXPR
+   13     | EXPR . plus EXPR
+   14     | EXPR . moins EXPR
+   15     | EXPR . mult EXPR
+   16     | EXPR . divi EXPR
+
+    plus    décalage et aller à l'état 14
+    moins   décalage et aller à l'état 15
+    mult    décalage et aller à l'état 16
+    divi    décalage et aller à l'état 17
+    inf     décalage et aller à l'état 18
+    inf_eg  décalage et aller à l'état 19
+    sup     décalage et aller à l'état 20
+    sup_eg  décalage et aller à l'état 21
+
+    $défaut  réduction par utilisation de la règle 10 (EXPR)
+
+
+état 36
+
+    6 EXPR: EXPR . inf EXPR
+    7     | EXPR . inf_eg EXPR
+    8     | EXPR . sup EXPR
+    9     | EXPR . sup_eg EXPR
+   10     | EXPR . eq EXPR
+   11     | EXPR . and EXPR
+   11     | EXPR and EXPR .
+   12     | EXPR . or EXPR
+   13     | EXPR . plus EXPR
+   14     | EXPR . moins EXPR
+   15     | EXPR . mult EXPR
+   16     | EXPR . divi EXPR
+
+    plus    décalage et aller à l'état 14
+    moins   décalage et aller à l'état 15
+    mult    décalage et aller à l'état 16
+    divi    décalage et aller à l'état 17
+    inf     décalage et aller à l'état 18
+    inf_eg  décalage et aller à l'état 19
+    sup     décalage et aller à l'état 20
+    sup_eg  décalage et aller à l'état 21
+    eq      décalage et aller à l'état 22
+
+    $défaut  réduction par utilisation de la règle 11 (EXPR)
+
+
+état 37
+
+    6 EXPR: EXPR . inf EXPR
+    7     | EXPR . inf_eg EXPR
+    8     | EXPR . sup EXPR
+    9     | EXPR . sup_eg EXPR
+   10     | EXPR . eq EXPR
+   11     | EXPR . and EXPR
+   12     | EXPR . or EXPR
+   12     | EXPR or EXPR .
+   13     | EXPR . plus EXPR
+   14     | EXPR . moins EXPR
+   15     | EXPR . mult EXPR
+   16     | EXPR . divi EXPR
+
+    plus    décalage et aller à l'état 14
+    moins   décalage et aller à l'état 15
+    mult    décalage et aller à l'état 16
+    divi    décalage et aller à l'état 17
+    inf     décalage et aller à l'état 18
+    inf_eg  décalage et aller à l'état 19
+    sup     décalage et aller à l'état 20
+    sup_eg  décalage et aller à l'état 21
+    eq      décalage et aller à l'état 22
+    and     décalage et aller à l'état 23
+
+    $défaut  réduction par utilisation de la règle 12 (EXPR)

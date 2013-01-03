@@ -17,6 +17,20 @@ string [a-zA-Z]
 "+" {return plus;}
 "-" {return moins;}
 "*" {return mult;}
+"/" {return divi;}
+"<" {return inf;}
+">" {return sup;}
+"<" {return inf;}
+"<=" {return inf_eg;}
+">=" {return sup_eg;}
+"=" {return eg;}
+"<>" {return eq;}
+"&&" {return and;}
+"||" {return or;}
+"not" {return not;}
+
+"true" {return true;}
+"false" {return false;}
 
 {string} return ident;
 {int} {yylval = atoi(yytext);return integer;}

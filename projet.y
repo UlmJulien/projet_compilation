@@ -21,16 +21,24 @@ void yyerror(char *s)
 
 %start PROGRAM
 
-%token integer print_int affect ident pt_virg plus par_g par_d moins mult
+%token integer print_int affect ident pt_virg plus par_g par_d moins mult divi true false
+%token inf inf_eg sup sup_eg eg eq not and or
 
-%left plus moins
-%left mult
+%right eg
+%left or
+%left and
+%left eq
+%left inf inf_eg sup sup_eg
+%left plus moins 
+%left mult divi
+
+
+%nonassoc umoins
 
 %%
 
 PROGRAM : INSTR pt_virg pt_virg 
     {
-        printf("Rule : Prog -> Intsr ;;\n");
         view_code(my_code);
         write_code(my_code);
     }
@@ -50,6 +58,96 @@ EXPR : integer
     {
         $$ = new_temp();
         sprintf(temp, "li $t%d %d\n", $$, yylval);
+        put_line(my_code, temp);
+    }
+
+    | true
+    {
+        $$ = new_temp();
+        
+        /* true */
+        sprintf(temp, "li $t%d 1\n", $$);
+        put_line(my_code, temp);
+    }
+
+    | false
+    {
+        $$ = new_temp();
+        
+        /* false */
+        sprintf(temp, "li $t%d 0\n", $$);
+        put_line(my_code, temp);
+    }
+
+    | EXPR inf EXPR
+    {
+        $$ = new_temp();
+        
+        /* inferieur */
+        sprintf(temp, "slt $t%d $t%d $t%d\n", $$, $1, $3);
+        put_line(my_code, temp);
+    }
+
+    | EXPR inf_eg EXPR
+    {
+        $$ = new_temp();
+        
+        /* inferieur ou egal */
+        sprintf(temp, "sle $t%d $t%d $t%d\n", $$, $1, $3);
+        put_line(my_code, temp);
+    }
+
+    | EXPR sup EXPR
+    {
+        $$ = new_temp();
+        
+        /* superieur */
+        sprintf(temp, "sgt $t%d $t%d $t%d\n", $$, $1, $3);
+        put_line(my_code, temp);
+    }
+
+    | EXPR sup_eg EXPR
+    {
+        $$ = new_temp();
+        
+        /* superieur ou egal */
+        sprintf(temp, "sge $t%d $t%d $t%d\n", $$, $1, $3);
+        put_line(my_code, temp);
+    }
+
+    | EXPR eq EXPR
+    {
+        $$ = new_temp();
+        
+        /* equivalent */
+        sprintf(temp, "seq $t%d $t%d $t%d\n", $$, $1, $3);
+        put_line(my_code, temp);
+    }
+
+    | EXPR and EXPR
+    {
+        $$ = new_temp();
+        
+        /* and */
+        sprintf(temp, "and $t%d $t%d $t%d\n", $$, $1, $3);
+        put_line(my_code, temp);
+    }
+
+    | EXPR or EXPR
+    {
+        $$ = new_temp();
+        
+        /* or */
+        sprintf(temp, "or $t%d $t%d $t%d\n", $$, $1, $3);
+        put_line(my_code, temp);
+    }
+
+    | not EXPR
+    {
+        $$ = new_temp();
+        
+        /* not */
+        sprintf(temp, "not $t%d $t%d\n", $$, $2);
         put_line(my_code, temp);
     }
 
@@ -80,9 +178,28 @@ EXPR : integer
         put_line(my_code, temp);
     }
 
+    | EXPR divi EXPR
+    {
+        $$ = new_temp();
+
+        /* division */
+        /* realise une division entiere, sans reste */
+        sprintf(temp, "div $t%d $t%d $t%d\n", $$, $1, $3);
+        put_line(my_code, temp);
+    }
+
     | par_g EXPR par_d
     {
         $$ = $2;
+    }
+
+    | moins EXPR %prec umoins
+    {
+        $$ = new_temp();
+
+        /* moins unaire */
+        sprintf(temp, "neg $t%d $t%d \n", $$, $2);
+        put_line(my_code, temp);
     }
     ;
 
