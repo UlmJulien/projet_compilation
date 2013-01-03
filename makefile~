@@ -1,0 +1,8 @@
+all :
+	yacc -v -d -t tp3.yacc
+	flex tp3.lex
+	gcc *.c -lfl -o main
+clean : 
+	rm y.*
+	rm lex.*
+	rm main

@@ -1,0 +1,4 @@
+#!/bin/bash
+yacc -v projet.y
+yacc -d projet.y && lex projet.l && gcc lex.yy.c y.tab.c -lfl -o scalpa
+
