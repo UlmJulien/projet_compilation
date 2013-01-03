@@ -10,8 +10,13 @@ string [a-zA-Z]
 
 %%
 
-":=" return affect;
+":=" {return affect;}
 ";" {return pt_virg;}
+"(" {return par_g;}
+")" {return par_d;}
+"+" {return plus;}
+"-" {return moins;}
+"*" {return mult;}
 
 {string} return ident;
 {int} {yylval = atoi(yytext);return integer;}

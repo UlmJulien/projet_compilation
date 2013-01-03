@@ -41,7 +41,12 @@
      print_int = 259,
      affect = 260,
      ident = 261,
-     pt_virg = 262
+     pt_virg = 262,
+     plus = 263,
+     par_g = 264,
+     par_d = 265,
+     moins = 266,
+     mult = 267
    };
 #endif
 /* Tokens.  */
@@ -50,6 +55,11 @@
 #define affect 260
 #define ident 261
 #define pt_virg 262
+#define plus 263
+#define par_g 264
+#define par_d 265
+#define moins 266
+#define mult 267
 
 
 
