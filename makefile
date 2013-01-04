@@ -5,4 +5,5 @@ all :
 clean : 
 	rm y.*
 	rm lex.*
+	rm rend.txt
 	rm main

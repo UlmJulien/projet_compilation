@@ -59,7 +59,10 @@
      not = 277,
      and = 278,
      or = 279,
-     umoins = 280
+     string = 280,
+     _if = 281,
+     _then = 282,
+     umoins = 283
    };
 #endif
 /* Tokens.  */
@@ -85,7 +88,10 @@
 #define not 277
 #define and 278
 #define or 279
-#define umoins 280
+#define string 280
+#define _if 281
+#define _then 282
+#define umoins 283
 
 
 

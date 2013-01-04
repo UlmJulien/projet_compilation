@@ -6,7 +6,10 @@
 %option yylineno
 
 int [0-9]*
-string [a-zA-Z]
+ident [a-zA-Z]
+compl_string [^"]
+string \"{compl_string}*\"
+space [ \n\b]
 
 %%
 
@@ -32,9 +35,18 @@ string [a-zA-Z]
 "true" {return true;}
 "false" {return false;}
 
-{string} return ident;
+"if" {return _if;}
+"then" {return _then;}
+
+{ident} {return ident;}
 {int} {yylval = atoi(yytext);return integer;}
+{string}    { 
+                return string;
+            }
+{space} 
 
 "print_int" {return print_int;}
+
+
 
 %%

@@ -13,5 +13,7 @@ code new_code ();
 void put_line (code tab, char* line);
 void view_code (code tab);
 
+void complete (code tab, int t1, int t2, int line);
+
 #endif
 

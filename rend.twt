@@ -1,26 +1,6 @@
 .text
 main:
-li $t1 4
-
-li $t2 7
-
-slt $t3 $t1 $t2
-
-li $t4 3
-
-li $t5 9
-
-sge $t6 $t4 $t5
-
-and $t7 $t3 $t6
-
-li $t8 4
-
-li $t9 4
-
-seq $t0 $t8 $t9
-
-or $t1 $t7 $t0
+li $t1 5
 
 move $a0 $t1
 

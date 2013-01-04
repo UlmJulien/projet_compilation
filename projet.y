@@ -22,7 +22,7 @@ void yyerror(char *s)
 %start PROGRAM
 
 %token integer print_int affect ident pt_virg plus par_g par_d moins mult divi true false
-%token inf inf_eg sup sup_eg eg eq not and or
+%token inf inf_eg sup sup_eg eg eq not and or string _if _then
 
 %right eg
 %left or
@@ -46,12 +46,23 @@ PROGRAM : INSTR pt_virg pt_virg
 
 INSTR : print_int EXPR 
     {   
+        /* affichage d'un entier */
         sprintf(temp, "move $a0 $t%d\n", $2);
         put_line(my_code, temp);
 
         sprintf(temp, "li $v0 1\nsyscall");
         put_line(my_code, temp);
     }
+
+    | _if EXPR J _then INSTR
+    {
+        /* structure de controle if then */
+        sprintf(temp, "L%d:\n", my_code->current_line);
+        put_line(my_code, temp);
+
+        complete(my_code, $3, $2, (my_code->current_line)-1);
+    }
+
     ;
 
 EXPR : integer 
@@ -199,6 +210,18 @@ EXPR : integer
 
         /* moins unaire */
         sprintf(temp, "neg $t%d $t%d \n", $$, $2);
+        put_line(my_code, temp);
+    }
+    ;
+
+J :
+    {
+        /* generation du code pour le jump */
+        /* complete dans la structure de controle */
+
+        $$ = my_code->current_line;
+
+        sprintf(temp, "");
         put_line(my_code, temp);
     }
     ;
