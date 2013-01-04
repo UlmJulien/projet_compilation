@@ -39,9 +39,17 @@ void write_code (code c){
 }
 
 // complete le jump dans le cadre des structures de controle
-void complete (code tab, int t1, int t2, int line){
+void complete (code tab, int t1, int t2, int c, int line){
+    
     char temp[64];
-    sprintf(temp, "bne 0 $t%d L%d", t2, line);
+    sprintf(temp, "bne $t%d $t%d L%d", c, t2, line);
     
     strcpy(tab->tab_code[t1], temp);
+}
+
+void complete_jump (code tab, int jump, int label){
+    char temp[64];
+    sprintf(temp, "j L%d", label);
+    
+    strcpy(tab->tab_code[jump], temp);    
 }

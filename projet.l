@@ -23,7 +23,6 @@ space [ \n\b]
 "/" {return divi;}
 "<" {return inf;}
 ">" {return sup;}
-"<" {return inf;}
 "<=" {return inf_eg;}
 ">=" {return sup_eg;}
 "=" {return eg;}
@@ -37,6 +36,7 @@ space [ \n\b]
 
 "if" {return _if;}
 "then" {return _then;}
+"else" {return _else;}
 
 {ident} {return ident;}
 {int} {yylval = atoi(yytext);return integer;}

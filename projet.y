@@ -22,7 +22,9 @@ void yyerror(char *s)
 %start PROGRAM
 
 %token integer print_int affect ident pt_virg plus par_g par_d moins mult divi true false
-%token inf inf_eg sup sup_eg eg eq not and or string _if _then
+%token inf inf_eg sup sup_eg eg eq not and or string _if _then _else
+
+%nonassoc umoins
 
 %right eg
 %left or
@@ -31,9 +33,6 @@ void yyerror(char *s)
 %left inf inf_eg sup sup_eg
 %left plus moins 
 %left mult divi
-
-
-%nonassoc umoins
 
 %%
 
@@ -54,15 +53,26 @@ INSTR : print_int EXPR
         put_line(my_code, temp);
     }
 
-    | _if EXPR J _then INSTR
+    | _if EXPR T J _then INSTR
     {
         /* structure de controle if then */
         sprintf(temp, "L%d:\n", my_code->current_line);
         put_line(my_code, temp);
 
-        complete(my_code, $3, $2, (my_code->current_line)-1);
+        complete(my_code, $4, $2, $3, (my_code->current_line)-1);
     }
 
+    | _if EXPR T J _then INSTR _else G M INSTR
+    {
+        /* structure de controle if then else */
+        int f_temp = new_flag();
+        sprintf(temp, "L%d:\n", f_temp);
+        put_line(my_code, temp);
+
+        complete(my_code, $4, $2, $3, $9);
+
+        complete_jump(my_code, $8, f_temp); 
+    }
     ;
 
 EXPR : integer 
@@ -214,6 +224,17 @@ EXPR : integer
     }
     ;
 
+T : 
+    {
+        /* tag utile pour la comparaison */
+        /* stockage du 1 (true) pour la comparaison dans les structures de controle */
+        $$ = new_temp();
+
+        sprintf(temp, "li $t%d 1", $$);
+        put_line(my_code, temp);
+    }
+    ;
+
 J :
     {
         /* generation du code pour le jump */
@@ -221,6 +242,26 @@ J :
 
         $$ = my_code->current_line;
 
+        sprintf(temp, "");
+        put_line(my_code, temp);
+    }
+    ;
+
+M :
+    {
+        $$ = new_flag();
+        
+        /* creation d'un flag pour un goto */
+        sprintf(temp, "L%d:\n", $$);
+        put_line(my_code, temp);
+    }
+    ;
+
+G : 
+    {
+        $$ = my_code->current_line;
+
+        /* creation d'un jump */
         sprintf(temp, "");
         put_line(my_code, temp);
     }

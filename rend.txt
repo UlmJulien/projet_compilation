@@ -4,10 +4,25 @@ li $t1 4
 
 li $t2 2
 
-sgt $t3 $t1 $t2
+slt $t3 $t1 $t2
 
-move $a0 $t3
+li $t4 1
+bne $t4 $t3 L1
+li $t5 5
+
+move $a0 $t5
 
 li $v0 1
 syscall
+j L2
+L1:
+
+li $t6 10
+
+move $a0 $t6
+
+li $v0 1
+syscall
+L2:
+
 j $ra

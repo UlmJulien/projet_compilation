@@ -1,2 +1,2 @@
-print_int (4 > 2);;
+if (4 < 2) then print_int (5) else print_int (10) ;;
 

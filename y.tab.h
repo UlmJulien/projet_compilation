@@ -62,7 +62,8 @@
      string = 280,
      _if = 281,
      _then = 282,
-     umoins = 283
+     _else = 283,
+     umoins = 284
    };
 #endif
 /* Tokens.  */
@@ -91,7 +92,8 @@
 #define string 280
 #define _if 281
 #define _then 282
-#define umoins 283
+#define _else 283
+#define umoins 284
 
 
 
