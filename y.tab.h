@@ -63,7 +63,14 @@
      _if = 281,
      _then = 282,
      _else = 283,
-     umoins = 284
+     _while = 284,
+     _do = 285,
+     _done = 286,
+     read_int = 287,
+     _begin = 288,
+     _end = 289,
+     print_string = 290,
+     umoins = 291
    };
 #endif
 /* Tokens.  */
@@ -93,13 +100,34 @@
 #define _if 281
 #define _then 282
 #define _else 283
-#define umoins 284
+#define _while 284
+#define _do 285
+#define _done 286
+#define read_int 287
+#define _begin 288
+#define _end 289
+#define print_string 290
+#define umoins 291
 
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+typedef union YYSTYPE
+{
+
+/* Line 2068 of yacc.c  */
+#line 41 "projet.y"
+
+    struct str_attribute att;
+    int lex_val;
+    char* lex_string;
+
+
+
+/* Line 2068 of yacc.c  */
+#line 130 "y.tab.h"
+} YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

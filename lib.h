@@ -8,5 +8,7 @@ int new_temp(void);
 
 int new_flag(void);
 
+int new_data(void);
+
 
 #endif

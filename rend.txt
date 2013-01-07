@@ -1,28 +1,24 @@
+.data
+str1: .asciiz "3<4"
+str2: .asciiz "3>4"
+str3: .asciiz "because fuck you"
 .text
 main:
-li $t1 4
-
-li $t2 2
-
-slt $t3 $t1 $t2
-
+li $t1 3
+li $t2 4
+sgt $t3 $t1 $t2
 li $t4 1
 bne $t4 $t3 L1
-li $t5 5
-
-move $a0 $t5
-
-li $v0 1
+la $a0 str1
+li $v0 4
 syscall
 j L2
 L1:
-
-li $t6 10
-
-move $a0 $t6
-
-li $v0 1
+la $a0 str2
+li $v0 4
+syscall
+la $a0 str3
+li $v0 4
 syscall
 L2:
-
 j $ra

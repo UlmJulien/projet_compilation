@@ -7,9 +7,22 @@ code new_code (){
     return code_tab;
 }
 
+//genere une nouvelle table pour stocker les datas
+data new_data_table (){
+    data data_tab = malloc(sizeof(struct str_data));
+    data_tab->current_line = 0;
+    return data_tab;
+}
+
 // insere une ligne dans la table de code
 void put_line (code tab, char* line){
     strcpy(tab->tab_code[tab->current_line], line);
+    (tab->current_line)++;
+}
+
+// insere une ligne dans la table des datas
+void put_data (data tab, char* line){
+    strcpy(tab->tab_data[tab->current_line], line);
     (tab->current_line)++;
 }
 
@@ -22,9 +35,27 @@ void view_code (code tab){
     }
 }
 
+// affiche le contenu de la table des datas
+void view_data (data tab){
+    int i;
+    for(i=0; i<tab->current_line; i++)
+    {
+        printf("%s\n", tab->tab_data[i]);
+    }
+}
+
 // ecrit le contenu de la table de code dans le fichier 'rend.txt'
-void write_code (code c){
+void write_code (code c, data d){
     FILE* file = fopen("rend.txt", "w+");
+    fprintf(file, ".data\n");
+    
+    int j;
+    for(j=0; j<d->current_line; j++)
+    {
+        fprintf(file, "%s\n", d->tab_data[j]);
+    }
+    
+    
     fprintf(file, ".text\n");
     fprintf(file, "main:\n");
     

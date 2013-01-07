@@ -1,6 +1,8 @@
 %{
 #include <stdio.h>
+#include "symbole.h"
 #include "y.tab.h"
+
 %}
 
 %option yylineno
@@ -37,16 +39,27 @@ space [ \n\b]
 "if" {return _if;}
 "then" {return _then;}
 "else" {return _else;}
+"while" {return _while;}
+"do" {return _do;}
+"done" {return _done;}
+"begin" {return _begin;}
+"end" {return _end;}
 
 {ident} {return ident;}
-{int} {yylval = atoi(yytext);return integer;}
+{int} {yylval.lex_val = atoi(yytext);return integer;}
 {string}    { 
+                yylval.lex_string = malloc((yyleng+1)*sizeof(char));
+                strncpy(yylval.lex_string,yytext,yyleng);
+                yylval.lex_string[yyleng]='\0';
                 return string;
             }
 {space} 
 
 "print_int" {return print_int;}
 
+"print_string" {return print_string;}
+
+"read_int" {return read_int;}
 
 
 %%
