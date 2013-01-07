@@ -40,36 +40,36 @@
      integer = 258,
      print_int = 259,
      affect = 260,
-     ident = 261,
-     pt_virg = 262,
-     plus = 263,
-     par_g = 264,
-     par_d = 265,
-     moins = 266,
-     mult = 267,
-     divi = 268,
-     true = 269,
-     false = 270,
-     inf = 271,
-     inf_eg = 272,
-     sup = 273,
-     sup_eg = 274,
-     eg = 275,
-     eq = 276,
-     not = 277,
-     and = 278,
-     or = 279,
-     string = 280,
-     _if = 281,
-     _then = 282,
-     _else = 283,
-     _while = 284,
-     _do = 285,
-     _done = 286,
-     read_int = 287,
-     _begin = 288,
-     _end = 289,
-     print_string = 290,
+     pt_virg = 261,
+     plus = 262,
+     par_g = 263,
+     par_d = 264,
+     moins = 265,
+     mult = 266,
+     divi = 267,
+     true = 268,
+     false = 269,
+     inf = 270,
+     inf_eg = 271,
+     sup = 272,
+     sup_eg = 273,
+     eg = 274,
+     eq = 275,
+     not = 276,
+     and = 277,
+     or = 278,
+     string = 279,
+     _if = 280,
+     _then = 281,
+     _else = 282,
+     _while = 283,
+     _do = 284,
+     _done = 285,
+     read_int = 286,
+     _begin = 287,
+     _end = 288,
+     print_string = 289,
+     ident = 290,
      umoins = 291
    };
 #endif
@@ -77,36 +77,36 @@
 #define integer 258
 #define print_int 259
 #define affect 260
-#define ident 261
-#define pt_virg 262
-#define plus 263
-#define par_g 264
-#define par_d 265
-#define moins 266
-#define mult 267
-#define divi 268
-#define true 269
-#define false 270
-#define inf 271
-#define inf_eg 272
-#define sup 273
-#define sup_eg 274
-#define eg 275
-#define eq 276
-#define not 277
-#define and 278
-#define or 279
-#define string 280
-#define _if 281
-#define _then 282
-#define _else 283
-#define _while 284
-#define _do 285
-#define _done 286
-#define read_int 287
-#define _begin 288
-#define _end 289
-#define print_string 290
+#define pt_virg 261
+#define plus 262
+#define par_g 263
+#define par_d 264
+#define moins 265
+#define mult 266
+#define divi 267
+#define true 268
+#define false 269
+#define inf 270
+#define inf_eg 271
+#define sup 272
+#define sup_eg 273
+#define eg 274
+#define eq 275
+#define not 276
+#define and 277
+#define or 278
+#define string 279
+#define _if 280
+#define _then 281
+#define _else 282
+#define _while 283
+#define _do 284
+#define _done 285
+#define read_int 286
+#define _begin 287
+#define _end 288
+#define print_string 289
+#define ident 290
 #define umoins 291
 
 
@@ -117,7 +117,7 @@ typedef union YYSTYPE
 {
 
 /* Line 2068 of yacc.c  */
-#line 41 "projet.y"
+#line 43 "projet.y"
 
     struct str_attribute att;
     int lex_val;

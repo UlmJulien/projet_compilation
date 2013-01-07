@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "symbole.h"
 
 typedef struct str_code {
     int current_line;

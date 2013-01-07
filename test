@@ -1,2 +1,2 @@
-if (3 > 4) then print_string "3<4" else begin print_string "3>4"; print_string "because fuck you" end;;
+begin a := 2; print_int !a end;;
 

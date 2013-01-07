@@ -44,6 +44,15 @@ void view_data (data tab){
     }
 }
 
+//affiche la table des symboles
+void view_table(symtab s){
+    int i;
+    for(i=0; i<s->current_id; i++)
+    {
+        printf("%s : $s%d\n", s->table[i]->name, s->table[i]->temp_value);
+    }
+}
+
 // ecrit le contenu de la table de code dans le fichier 'rend.txt'
 void write_code (code c, data d){
     FILE* file = fopen("rend.txt", "w+");

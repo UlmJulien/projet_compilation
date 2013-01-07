@@ -8,7 +8,7 @@
 %option yylineno
 
 int [0-9]*
-ident [a-zA-Z]
+ident [a-zA-Z]+[a-zA-Z0-9]*
 compl_string [^"]
 string \"{compl_string}*\"
 space [ \n\b]
@@ -45,14 +45,22 @@ space [ \n\b]
 "begin" {return _begin;}
 "end" {return _end;}
 
-{ident} {return ident;}
-{int} {yylval.lex_val = atoi(yytext);return integer;}
+{ident} {
+                yylval.lex_string = malloc((yyleng+1)*sizeof(char));
+                strncpy(yylval.lex_string,yytext,yyleng);
+                yylval.lex_string[yyleng]='\0';
+                return ident;
+        }
+
 {string}    { 
                 yylval.lex_string = malloc((yyleng+1)*sizeof(char));
                 strncpy(yylval.lex_string,yytext,yyleng);
                 yylval.lex_string[yyleng]='\0';
                 return string;
             }
+
+{int} {yylval.lex_val = atoi(yytext);return integer;}
+
 {space} 
 
 "print_int" {return print_int;}

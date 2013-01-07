@@ -6,8 +6,11 @@ int current_flag = 0;
 
 int current_data = 0;
 
+int current_ident = 0;
+
 
 //renvoie un nouveau temporaire
+//les temporaires utilisent les $t
 int new_temp () 
 {
     current_temp ++;
@@ -26,4 +29,11 @@ int new_data ()
 {
     current_data ++;
     return current_data;
+}
+
+//renvoie un nouveau numero d'identifiant
+//les identifiantsutilisent les $s
+int new_ident (){
+    current_ident++;
+    return current_ident%8;
 }

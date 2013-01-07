@@ -6,6 +6,7 @@
 #include "lib.h"
 #include "symbole.h"
 
+symtab my_table;
 code my_code;
 data my_data;
 char temp[64]; // for put_line purposes
@@ -23,9 +24,10 @@ void yyerror(char *s)
 
 %start PROGRAM
 
-%token<att> integer print_int affect ident pt_virg plus par_g par_d moins mult divi true false
-%token<att> inf inf_eg sup sup_eg eg eq not and or string _if _then _else _while _do _done read_int
-%token<att> _begin _end print_string
+%token integer print_int affect pt_virg plus par_g par_d moins mult divi true false
+%token inf inf_eg sup sup_eg eg eq not and or string _if _then _else _while _do _done read_int
+%token _begin _end print_string
+%token<att> ident
 
 %nonassoc umoins
 
@@ -44,7 +46,7 @@ void yyerror(char *s)
     char* lex_string;
 }
 
-%type<lex_val> EXPR J T G M
+%type<lex_val> EXPR IDENT J T G M
 
 %%
 
@@ -54,6 +56,8 @@ PROGRAM : INSTR pt_virg pt_virg
         view_data(my_data);
         printf(".text\n");
         view_code(my_code);
+        printf("_____________________\n");
+        view_table(my_table);
         write_code(my_code, my_data);
     }
     ;
@@ -127,6 +131,13 @@ INSTR : print_int EXPR
     {
         /* rien */
     }
+
+    | IDENT affect EXPR
+    {
+        /* generation du code pour l'affectation */
+        sprintf(temp, "move $s%d $t%d", $1, $3);
+        put_line(my_code, temp);
+    }
     ;
 
 SEQUENCE : INSTR
@@ -163,6 +174,11 @@ EXPR : integer
         /* false */
         sprintf(temp, "li $t%d 0", $$);
         put_line(my_code, temp);
+    }
+
+    | pt_exl IDENT
+    {
+        
     }
 
     | EXPR inf EXPR
@@ -305,6 +321,19 @@ EXPR : integer
     }
     ;
 
+IDENT : ident
+    {
+        /* creation de l'identifiant dans la table des symboles */
+        int id_temp = new_ident();
+        att temp_att = new_attribute();
+        set_attribute(temp_att, yylval.lex_string, id_temp);
+
+        put_attribute (my_table, temp_att);
+        
+        $$ = id_temp;
+    }
+    ;
+
 T : 
     {
         /* tag utile pour la comparaison */
@@ -353,8 +382,11 @@ G :
 
 int main (){
 
+my_table = init_symtab();
 my_code = new_code();
 my_data = new_data_table();
+
 yyparse();
+
 }
 

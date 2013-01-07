@@ -10,5 +10,7 @@ int new_flag(void);
 
 int new_data(void);
 
+int new_ident(void);
+
 
 #endif
