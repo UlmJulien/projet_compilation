@@ -11,6 +11,8 @@ code my_code;
 data my_data;
 char temp[64]; // for put_line purposes
 
+int expr_type = 0;
+
 extern int yylex();
 extern int yylineno;
 
@@ -26,7 +28,7 @@ void yyerror(char *s)
 
 %token integer print_int affect pt_virg plus par_g par_d moins mult divi true false
 %token inf inf_eg sup sup_eg eg eq not and or string _if _then _else _while _do _done read_int
-%token _begin _end print_string
+%token _begin _end print_string pt_exl
 %token<att> ident
 
 %nonassoc umoins
@@ -65,8 +67,17 @@ PROGRAM : INSTR pt_virg pt_virg
 INSTR : print_int EXPR 
     {   
         /* affichage d'un entier */
-        sprintf(temp, "move $a0 $t%d", $2);
-        put_line(my_code, temp);
+        if(expr_type == 0)
+        {
+            sprintf(temp, "move $a0 $t%d", $2);
+            put_line(my_code, temp);
+        }
+        else
+        {
+            sprintf(temp, "move $a0 $s%d", $2);
+            put_line(my_code, temp);
+            expr_type = 0;
+        }
 
         sprintf(temp, "li $v0 1\nsyscall");
         put_line(my_code, temp);
@@ -135,7 +146,7 @@ INSTR : print_int EXPR
     | IDENT affect EXPR
     {
         /* generation du code pour l'affectation */
-        sprintf(temp, "move $s%d $t%d", $1, $3);
+        sprintf(temp, "move $s%d $t%d", $1, $3); /* le registre s garde le registre t contenant l'EXPR */
         put_line(my_code, temp);
     }
     ;
@@ -178,7 +189,8 @@ EXPR : integer
 
     | pt_exl IDENT
     {
-        
+        $$ = $2; /* on transmet simplement le numero de registre */
+        expr_type = 1;
     }
 
     | EXPR inf EXPR
@@ -323,14 +335,23 @@ EXPR : integer
 
 IDENT : ident
     {
-        /* creation de l'identifiant dans la table des symboles */
-        int id_temp = new_ident();
-        att temp_att = new_attribute();
-        set_attribute(temp_att, yylval.lex_string, id_temp);
+        if (exist_ident(my_table, yylval.lex_string))
+        {
+            /* on cherche si l'ident existe deja */
+            att att_temp = get_ident(my_table, yylval.lex_string);
+            $$ = att_temp->temp_value; /* renvoie le temporaire contenant l'ident */
+        }
+        else 
+        {
+            /* sinon, creation de l'identifiant dans la table des symboles */
+            int id_temp = new_ident();
+            att temp_att = new_attribute();
+            set_attribute(temp_att, yylval.lex_string, id_temp);
 
-        put_attribute (my_table, temp_att);
-        
-        $$ = id_temp;
+            put_attribute (my_table, temp_att);
+
+            $$ = id_temp;
+        }
     }
     ;
 

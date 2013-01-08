@@ -1,2 +1,2 @@
-begin a := 2; print_int !a end;;
+begin a := 2; a := 3; b := 1; print_int !a; print_int (!b + !a) end;;
 

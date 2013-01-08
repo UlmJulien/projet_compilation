@@ -3,4 +3,15 @@
 main:
 li $t1 2
 move $s1 $t1
+li $t2 3
+move $s1 $t2
+li $t3 1
+move $s2 $t3
+move $a0 $s1
+li $v0 1
+syscall
+add $t4 $t2 $t1
+move $a0 $s4
+li $v0 1
+syscall
 j $ra

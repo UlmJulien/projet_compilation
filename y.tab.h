@@ -69,8 +69,9 @@
      _begin = 287,
      _end = 288,
      print_string = 289,
-     ident = 290,
-     umoins = 291
+     pt_exl = 290,
+     ident = 291,
+     umoins = 292
    };
 #endif
 /* Tokens.  */
@@ -106,8 +107,9 @@
 #define _begin 287
 #define _end 288
 #define print_string 289
-#define ident 290
-#define umoins 291
+#define pt_exl 290
+#define ident 291
+#define umoins 292
 
 
 
@@ -117,7 +119,7 @@ typedef union YYSTYPE
 {
 
 /* Line 2068 of yacc.c  */
-#line 43 "projet.y"
+#line 45 "projet.y"
 
     struct str_attribute att;
     int lex_val;
@@ -126,7 +128,7 @@ typedef union YYSTYPE
 
 
 /* Line 2068 of yacc.c  */
-#line 130 "y.tab.h"
+#line 132 "y.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

@@ -17,6 +17,7 @@ space [ \n\b]
 
 ":=" {return affect;}
 ";" {return pt_virg;}
+"!" {return pt_exl;}
 "(" {return par_g;}
 ")" {return par_d;}
 "+" {return plus;}

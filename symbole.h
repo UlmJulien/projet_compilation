@@ -20,5 +20,9 @@ att new_attribute(void);
 void put_attribute(symtab, att);
 void set_attribute (att a, char* n, int t);
 
+int exist_ident(symtab s, char* c);
+
+att get_ident(symtab s, char * c);
+
 
 #endif
